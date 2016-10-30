@@ -1,19 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="259d2ce0-fae3-4fa4-bb44-cd267a6405e6" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/elastic_star.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/chinook_db/data_extract.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/elastic_star/__init__.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/elastic_star/settings.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/elastic_star/urls.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/elastic_star/wsgi.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/manage.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/utils/elastic_utils.py" />
-    </list>
+    <list default="true" id="259d2ce0-fae3-4fa4-bb44-cd267a6405e6" name="Default" comment="" />
     <ignored path="elastic_star.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
