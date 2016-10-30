@@ -17,3 +17,8 @@ def _gen_relationship(base, direction, return_fn,
     # the result.
     return generate_relationship(base, direction, return_fn,
                                  attrname, local_cls, referred_cls, **kw)
+                                 
+def serialize(schema, obj):
+    dump_data = schema.dump(obj).data
+    
+    return dump_data
