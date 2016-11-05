@@ -41,6 +41,12 @@ def calculate_age(audit_date, born):
     else:
         return audit_date.year - born.year
 
+transform_funcs = {'geo_from_zip': create_geopoint,
+                   'full_name': create_full_name,
+                   'calc_age': calculate_age}
+
+
+#------------------------ helper functions ------------------------------------
 # Get data from a dictionary with position provided as a list
 def getFromDict(dataDict, mapList):    
     for k in mapList: dataDict = dataDict[k]

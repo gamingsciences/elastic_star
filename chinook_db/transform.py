@@ -6,16 +6,13 @@ Created on Fri Nov  4 17:03:32 2016
 """
 import os
 import jsoncfg
-from utils.transform_utils import create_geopoint, create_full_name, \
-                                  getFromDict, setInDict
+from utils.transform_utils import transform_funcs, getFromDict, setInDict
 
 
 config_file = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                            'transform_cfg.json')
 config = jsoncfg.load_config(config_file)
 
-transform_funcs = {'geo_from_zip': create_geopoint,
-                   'full_name': create_full_name}
 
 def transform(doc_dict):
     transforms = []
@@ -39,3 +36,10 @@ def transform(doc_dict):
         
     return doc_dict
     
+def batch_transform(audit_date, doc_list):
+    transformed_docs = []
+    for doc in doc_list:
+        transformed_docs.append(transform(doc))
+        
+    return transformed_docs
+

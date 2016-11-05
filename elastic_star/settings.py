@@ -127,4 +127,4 @@ from sqlalchemy import create_engine
 CHINOOK_ENGINE = create_engine('sqlite:///' + os.path.join(PROJECT_DIR, 'Chinook_Sqlite.sqlite'))
 
 #elasticsearch connection
-ES_HOST = "https://admin:santafe1@33c192f38ba000038f45d61b4fe43cac.us-east-1.aws.found.io:9243/"
+ES_HOST = "http://admin:santafe1@33c192f38ba000038f45d61b4fe43cac.us-east-1.aws.found.io:9200/"
