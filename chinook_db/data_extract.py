@@ -19,11 +19,15 @@ logger = ChinookExtractLogger()
 extract_logger = logger.myLogger()
 
 def invoice_extract(date):
+    index = 'chinook_invoice'
+    type_ = 'invoice'
     extract_logger.info("Extracting invoice records for %s" %date )
     session = Session()
     try:
         q = session.query(Invoice).filter(func.date(Invoice.InvoiceDate) == date)
-        results = [serialize(invoice_schema, obj) for obj in q]
+        results = [{'index': index, 
+                'type': type_,                
+                'body': serialize(invoice_schema, obj)} for obj in q]
         extract_logger.info("Extract successful")
         return results
         

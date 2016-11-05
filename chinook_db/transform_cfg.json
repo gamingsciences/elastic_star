@@ -1,0 +1,28 @@
+{
+    //The config file for the json transforms 
+
+    indexes:[
+        {
+            index: "chinook_invoice",
+            type: "invoice",
+            transforms: [
+                        {
+                            transform_func: "geo_from_zip",
+                            data_fields: {
+                                            "zip_code": ["customer", "PostalCode"]
+                                         },
+                            target_field_name: ["customer", "geo_point"]        
+                        },
+                        {
+                            transform_func: "full_name",
+                            data_fields: {
+                                            "first": ["customer", "FirstName"],
+                                            "last": ["customer", "LastName"]
+                                         },
+                            target_field_name: ["customer", "FullName"]        
+                        }
+                    ]                   
+        },
+    ]
+}
+
