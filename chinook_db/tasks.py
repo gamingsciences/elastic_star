@@ -12,7 +12,7 @@ from .etl import etl
 
 
 from utils.loggers import UpdateElasticLogger
-#from utils.timezone_utils import utc_to_local
+from utils.timezone_utils import utc_to_local
 from django.conf import settings
 
 from elasticsearch import Elasticsearch
