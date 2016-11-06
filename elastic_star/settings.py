@@ -39,7 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
-    'conformed_dimensions',
+    'conformed_dimensions.apps.ConformedDimensionsConfig',
+    'djcelery',
+    'djkombu',
+    'kombu.transport.django',
 ]
 
 MIDDLEWARE = [
@@ -121,6 +124,20 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Celery settings  
+# also update the db with: python manage.py migrate kombu_transport_django
+import djcelery
+djcelery.setup_loader()
+CELERY_IMPORTS = ("conformed_dimensions.tasks", "elastic.tasks", )
+CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
+BROKER_URL = 'django://' 
+CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
+#: Only add pickle to this list if your broker is secured 
+#: from unwanted access (see userguide/security.html) 
+CELERY_ACCEPT_CONTENT = ['json'] 
+CELERY_TASK_SERIALIZER = 'json' 
+CELERY_RESULT_SERIALIZER = 'json'
 
 # sqlalchemy connection to legacy databases
 from sqlalchemy import create_engine
