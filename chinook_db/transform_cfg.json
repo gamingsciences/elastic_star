@@ -23,6 +23,27 @@
                         }
                     ]                   
         },
+        {
+            index: "chinook_invoiceline",
+            type: "invoiceline",
+            transforms: [
+                        {
+                            transform_func: "geo_from_zip",
+                            data_fields: {
+                                            "zip_code": ["customer", "PostalCode"]
+                                         },
+                            target_field_name: ["customer", "geo_point"]        
+                        },
+                        {
+                            transform_func: "full_name",
+                            data_fields: {
+                                            "first": ["customer", "FirstName"],
+                                            "last": ["customer", "LastName"]
+                                         },
+                            target_field_name: ["customer", "FullName"]        
+                        }
+                    ]                   
+        },
     ]
 }
 

@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 """
+Defines the Sqlalchemy models for the tables in the Chinook DB.
+
 Created on Sun Oct 30 11:53:55 2016
 
 @author: ken

@@ -56,24 +56,29 @@ class TrackSchema(ModelSchema):
     class Meta:
         model = Track
 
-
-class InvoiceLineSchema(ModelSchema):
-    track = fields.Nested(TrackSchema, exclude=('CustomerId',
-                                                'invoiceline_collection',
-                                                'playlist_collection'))
-    class Meta:
-        model = InvoiceLine
-
         
 class InvoiceSchema(ModelSchema):
     customer = fields.Nested(CustomerSchema, exclude=('playlist_collection',
                                                 'UnitPrice',
                                                 'invoiceline_collection',
                                                 'invoice_collection'))
-    invoiceline_collection = fields.Nested(InvoiceLineSchema, many=True, 
-                                           exclude=('invoice',))
+    
     class Meta:
         model = Invoice
+        exclude = ('invoiceline_collection',)
+
+
+class InvoiceLineSchema(ModelSchema):
+    track = fields.Nested(TrackSchema, exclude=('CustomerId',
+                                                'invoiceline_collection',
+                                                'playlist_collection'))
+    
+    invoice = fields.Nested(InvoiceSchema, only=('customer', 
+                                                 'InvoiceDate',
+                                                 'InvoiceId'))    
+    
+    class Meta:
+        model = InvoiceLine
 
 
 class PlaylistSchema(ModelSchema):

@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 """
+The ETL function for ElasticStar.
+
 Created on Sat Nov  5 16:04:10 2016
 
 @author: ken
@@ -7,26 +9,30 @@ Created on Sat Nov  5 16:04:10 2016
 #import datetime
 #from preserialize.serialize import serialize
 from django.conf import settings
-from .data_extract import invoice_extract
+from .data_extract import extract_funcs
 from .transform import batch_transform
 from elasticsearch import Elasticsearch, helpers
 
 
 es_host = settings.ES_HOST
 
-def invoice_etl(audit_date):
+def etl(audit_date, data_type):
+    '''
+    The ETL function. Uses the Dict 'extract_funcs' and the data_type var
+    must be a key in this dict.
+    '''
     es = Elasticsearch([es_host])
     batch_chunks = []
     iterator = 0
-    invoice_ext = invoice_extract(audit_date)
-    invoice_trans = batch_transform(audit_date, invoice_ext)
-    for invoice in invoice_trans:
-        s = invoice
+    ext_func = extract_funcs[data_type]
+    ext = ext_func(audit_date)
+    trans = batch_transform(audit_date, ext)
+    for rec in trans:
         data_dict = {
-                "_index": s["index"], 
-                "_type": s["type"],
-                "_id": s["body"]["InvoiceId"],
-                "_source": s["body"]
+                "_index": rec["index"], 
+                "_type": rec["type"],
+                "_id": rec["id"],
+                "_source": rec["body"]
         }
         
         batch_chunks.append(data_dict)

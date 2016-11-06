@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 """
+Trandsform functions for ElasticStar.  Uses the transform_cfg.json file to 
+determine what transforms are performed on which fields of the json
+document created in the data extract.  Uses the helper functions getFromDict
+and setInDict. 
+
 Created on Fri Nov  4 17:03:32 2016
 
 @author: ken
@@ -7,7 +12,7 @@ Created on Fri Nov  4 17:03:32 2016
 import os
 import jsoncfg
 from utils.transform_utils import transform_funcs, getFromDict, setInDict
-from .utils.loggers import ChinookTransformLogger
+from utils.loggers import TransformLogger
 
 logger = TransformLogger()
 transform_logger = logger.myLogger()
@@ -15,6 +20,7 @@ transform_logger = logger.myLogger()
 
 config_file = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                            'transform_cfg.json')
+
 config = jsoncfg.load_config(config_file)
 
 
@@ -42,12 +48,12 @@ def transform(doc_dict):
     
 def batch_transform(date, doc_list):
     transformed_docs = []
-    transform_logger.info("Transforming chinook invoice records for %s" %date )
+    transform_logger.info("Transforming chinook records for %s" %date )
     for doc in doc_list:
         try:
             transformed_docs.append(transform(doc))
         except Exception as e:
-            transform_logger.info("Error extracting chinook invoice data for %s" % date)
+            transform_logger.info("Error transforming chinook data for %s" % date)
             transform_logger.error(e, exec_info=True)
         
     return transformed_docs
