@@ -12,7 +12,7 @@ from .etl import etl
 
 
 from utils.loggers import UpdateElasticLogger
-from utils.timezone_utils import utc_to_local
+#from utils.timezone_utils import utc_to_local
 from django.conf import settings
 
 from elasticsearch import Elasticsearch
@@ -23,7 +23,7 @@ logger = UpdateElasticLogger()
 elastic_logger = logger.myLogger()
 
 
-#@shared_task
+@shared_task
 def update_invoice_recs():
     elastic_logger.info("Updating elasticsearch Chinook Invoice Documents" )
     try:
@@ -54,7 +54,7 @@ def update_invoice_recs():
             elastic_logger.exception(e)
     elastic_logger.info("Update complete")
 
-#@shared_task
+@shared_task
 def update_invoiceline_recs():
     elastic_logger.info("Updating elasticsearch Chinook InvoiceLine Documents" )
     try:

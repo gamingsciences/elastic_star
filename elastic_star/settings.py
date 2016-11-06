@@ -32,6 +32,11 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'conformed_dimensions.apps.ConformedDimensionsConfig',
+    'djcelery',
+    'djkombu',
+    'kombu.transport.django',
+    
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -39,13 +44,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
-    'conformed_dimensions.apps.ConformedDimensionsConfig',
-    'djcelery',
-    'djkombu',
-    'kombu.transport.django',
 ]
 
-MIDDLEWARE = [
+MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -129,7 +130,7 @@ STATIC_URL = '/static/'
 # also update the db with: python manage.py migrate kombu_transport_django
 import djcelery
 djcelery.setup_loader()
-CELERY_IMPORTS = ("conformed_dimensions.tasks", "elastic.tasks", )
+CELERY_IMPORTS = ("conformed_dimensions.tasks", "chinook_db.tasks", )
 CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
 BROKER_URL = 'django://' 
 CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
