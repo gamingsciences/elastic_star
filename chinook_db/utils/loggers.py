@@ -10,16 +10,16 @@ import logging
 from django.conf import settings
 
 
-class ExtractLogger:
+class ChinookExtractLogger:
     logger = None
     def myLogger(self):
         if None == self.logger:
-            self.logger=logging.getLogger('Extract')
+            self.logger=logging.getLogger('ChinookExtract')
             self.logger.setLevel(logging.DEBUG)
             now = datetime.datetime.now()
             # if using windows, use '\' rather than '/'
             log_file = os.path.join(settings.PROJECT_DIR, 
-                                    'logs/extract_'+ now.strftime("%Y-%m-%d") +'.log')
+                                    'logs/chinook_extract_'+ now.strftime("%Y-%m-%d") +'.log')
             handler=logging.FileHandler(log_file)
             formatter = logging.Formatter('%(asctime)s\t%(levelname)s -- %(processName)s %(filename)s:%(lineno)s -- %(message)s')
             handler.setFormatter(formatter)
@@ -27,15 +27,15 @@ class ExtractLogger:
         return self.logger
 
 
-class TransformLogger:
+class ChinookTransformLogger:
     logger = None
     def myLogger(self):
         if None == self.logger:
-            self.logger=logging.getLogger('Transform')
+            self.logger=logging.getLogger('ChinookTransform')
             self.logger.setLevel(logging.DEBUG)
             now = datetime.datetime.now()
             log_file = os.path.join(settings.PROJECT_DIR, 
-                                    'logs\transform_'+ now.strftime("%Y-%m-%d") +'.log')
+                                    'logs\chinook_transform_'+ now.strftime("%Y-%m-%d") +'.log')
             handler=logging.FileHandler(log_file)
             formatter = logging.Formatter('%(asctime)s\t%(levelname)s -- %(processName)s %(filename)s:%(lineno)s -- %(message)s')
             handler.setFormatter(formatter)

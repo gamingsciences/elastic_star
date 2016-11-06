@@ -7,6 +7,10 @@ Created on Fri Nov  4 17:03:32 2016
 import os
 import jsoncfg
 from utils.transform_utils import transform_funcs, getFromDict, setInDict
+from .utils.loggers import ChinookTransformLogger
+
+logger = TransformLogger()
+transform_logger = logger.myLogger()
 
 
 config_file = os.path.join(os.path.dirname(os.path.abspath(__file__)),
@@ -36,10 +40,15 @@ def transform(doc_dict):
         
     return doc_dict
     
-def batch_transform(audit_date, doc_list):
+def batch_transform(date, doc_list):
     transformed_docs = []
+    transform_logger.info("Transforming chinook invoice records for %s" %date )
     for doc in doc_list:
-        transformed_docs.append(transform(doc))
+        try:
+            transformed_docs.append(transform(doc))
+        except Exception as e:
+            transform_logger.info("Error extracting chinook invoice data for %s" % date)
+            transform_logger.error(e, exec_info=True)
         
     return transformed_docs
 

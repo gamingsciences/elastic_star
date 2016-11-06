@@ -11,6 +11,7 @@ from .data_extract import invoice_extract
 from .transform import batch_transform
 from elasticsearch import Elasticsearch, helpers
 
+
 es_host = settings.ES_HOST
 
 def invoice_etl(audit_date):

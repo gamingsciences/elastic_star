@@ -13,15 +13,15 @@ from sqlalchemy import func
 from .models import Session, Invoice
 from .schemas import invoice_schema
 from utils.database_utils import serialize
-from utils.loggers import ChinookExtractLogger
+from utils.loggers import ExtractLogger
 
-logger = ChinookExtractLogger()
+logger = ExtractLogger()
 extract_logger = logger.myLogger()
 
 def invoice_extract(date):
     index = 'chinook_invoice'
     type_ = 'invoice'
-    extract_logger.info("Extracting invoice records for %s" %date )
+    extract_logger.info("Extracting chinook invoice records for %s" %date )
     session = Session()
     try:
         q = session.query(Invoice).filter(func.date(Invoice.InvoiceDate) == date)
@@ -32,7 +32,7 @@ def invoice_extract(date):
         return results
         
     except Exception as e:
-        extract_logger.info("Error extracting invoice data for %s" % date)
+        extract_logger.info("Error extracting chinook invoice data for %s" % date)
         extract_logger.error(e, exec_info=True)    
     
 
