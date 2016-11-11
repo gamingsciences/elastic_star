@@ -9,12 +9,10 @@ import datetime
 import pandas as pd
 from dateutil.parser import parse
 from .etl import etl
-
-
+from .models import *
 from utils.loggers import UpdateElasticLogger
 from utils.timezone_utils import utc_to_local
 from django.conf import settings
-
 from elasticsearch import Elasticsearch
 
 es_host = settings.ES_HOST
@@ -23,9 +21,8 @@ logger = UpdateElasticLogger()
 elastic_logger = logger.myLogger()
 
 
-@shared_task
-def update_invoice_recs():
-    elastic_logger.info("Updating elasticsearch Chinook Invoice Documents" )
+def update_recs(model):
+    elastic_logger.info("Updating elasticsearch %s Documents" % model.es_index )
     try:
         es = Elasticsearch([es_host])
         query = {
@@ -33,54 +30,27 @@ def update_invoice_recs():
                 'match_all': {},
             },
             'sort': {
-                    'InvoiceDate': {"order": "desc"}
+                    model.date_field.key: {"order": "desc"}
             },
             'size': '1'
         }
-        res = es.search(index='chinook_invoice', body=query)
-        
-        d = res['hits']['hits'][0]['_source']['InvoiceDate']
+        res = es.search(index=model.es_index, body=query)
+
+        d = res['hits']['hits'][0]['_source'][model.date_field.key]
         last_update = utc_to_local(parse(d))
         start_date = last_update + datetime.timedelta(days=1)
         today = datetime.datetime.now().date()
         end_date = today - datetime.timedelta(days=1)
         if start_date == end_date:
-            etl(start_date, "invoice")
+            etl(start_date, model)
         else:
             dates = pd.date_range(start_date, end_date).tolist()
             for date in dates:
-                etl(date, "invoice")
+                etl(date, model)
     except Exception as e:
             elastic_logger.exception(e)
     elastic_logger.info("Update complete")
 
 @shared_task
-def update_invoiceline_recs():
-    elastic_logger.info("Updating elasticsearch Chinook InvoiceLine Documents" )
-    try:
-        es = Elasticsearch([es_host])
-        query = {
-            'query': {
-                'match_all': {},
-            },
-            'sort': {
-                    'invoice.InvoiceDate': {"order": "desc"}
-            },
-            'size': '1'
-        }
-        res = es.search(index='chinook_invoiceline', body=query)
-        
-        d = res['hits']['hits'][0]['_source']['Invoice']['InvoiceDate']
-        last_update = utc_to_local(parse(d))
-        start_date = last_update + datetime.timedelta(days=1)
-        today = datetime.datetime.now().date()
-        end_date = today - datetime.timedelta(days=1)
-        if start_date == end_date:
-            etl(start_date, "invoiceline")
-        else:
-            dates = pd.date_range(start_date, end_date).tolist()
-            for date in dates:
-                etl(date, "invoiceline")
-    except Exception as e:
-            elastic_logger.exception(e)
-    elastic_logger.info("Update complete")
+def update_all():
+    update_recs(invoice)
