@@ -36,7 +36,7 @@ def update_recs(model):
         }
         res = es.search(index=model.es_index, body=query)
 
-        d = res['hits']['hits'][0]['_source'][model.date_field.key]
+        d = res['hits']['hits'][0]['_source'][model.es_date_field]
         last_update = utc_to_local(parse(d))
         start_date = last_update + datetime.timedelta(days=1)
         today = datetime.datetime.now().date()

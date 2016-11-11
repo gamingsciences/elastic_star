@@ -244,7 +244,8 @@ invoice_line = EsModel(base_model = Base.classes.InvoiceLine,
                 es_index = 'invoiceline',
                 es_type = 'invoiceline',
                 es_id = 'InvoiceLineId',
-                date_field = Base.classes.Invoice.InvoiceDate)
+                date_field = Base.classes.Invoice.InvoiceDate,
+                es_date_field='invoice.InvoiceDate')
 
 def invoiceline_ext_func(self, date):
     return session.query(self.base_model).join(Base.classes.Invoice)\
