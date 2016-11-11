@@ -26,16 +26,16 @@ def extract_by_date(model, date):
     type_ = model.es_type
     extract_logger.info("Extracting chinook %s records for %s" %(model.es_index, date))
     session = Session()
-    #try:
-    q = session.query(model.base_model).filter(func.date(model.date_field) == date)
-    results = [{'index': model.es_index,
-            'type': model.es_type,
-            'body': serialize(model.schema, obj),
-            'id':getattr(obj, model.es_id)} for obj in q]
+    try:
+        q = session.query(model.base_model).filter(func.date(model.date_field) == date)
+        results = [{'index': model.es_index,
+                'type': model.es_type,
+                'body': serialize(model.schema, obj),
+                'id':getattr(obj, model.es_id)} for obj in q]
 
-    extract_logger.info("Extract successful")
-    return results
+        extract_logger.info("Extract successful")
+        return results
 
-    #except Exception as e:
-    #    extract_logger.info("Error extracting %s data for %s" % (model.es_index, date))
-    #    extract_logger.error(e)
+    except Exception as e:
+        extract_logger.info("Error extracting %s data for %s" % (model.es_index, date))
+        extract_logger.error(e)

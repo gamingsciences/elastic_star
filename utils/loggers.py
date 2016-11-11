@@ -18,7 +18,7 @@ class ExtractLogger:
             self.logger.setLevel(logging.DEBUG)
             now = datetime.datetime.now()
             # if using windows, use '\' rather than '/'
-            log_file = os.path.join(settings.PROJECT_DIR, 
+            log_file = os.path.join(settings.PROJECT_DIR,
                                     'logs/extract_'+ now.strftime("%Y-%m-%d") +'.log')
             handler=logging.FileHandler(log_file)
             formatter = logging.Formatter('%(asctime)s\t%(levelname)s -- %(processName)s %(filename)s:%(lineno)s -- %(message)s')
@@ -34,8 +34,8 @@ class TransformLogger:
             self.logger=logging.getLogger('Transform')
             self.logger.setLevel(logging.DEBUG)
             now = datetime.datetime.now()
-            log_file = os.path.join(settings.PROJECT_DIR, 
-                                    'logs\transform_'+ now.strftime("%Y-%m-%d") +'.log')
+            log_file = os.path.join(settings.PROJECT_DIR,
+                                    'logs/transform_'+ now.strftime("%Y-%m-%d") +'.log')
             handler=logging.FileHandler(log_file)
             formatter = logging.Formatter('%(asctime)s\t%(levelname)s -- %(processName)s %(filename)s:%(lineno)s -- %(message)s')
             handler.setFormatter(formatter)
@@ -50,8 +50,8 @@ class UpdateElasticLogger:
             self.logger=logging.getLogger('ElasticUpdate')
             self.logger.setLevel(logging.DEBUG)
             now = datetime.datetime.now()
-            log_file = os.path.join(settings.PROJECT_DIR, 
-                                    'logs\elastic_update_'+ now.strftime("%Y-%m-%d") +'.log')
+            log_file = os.path.join(settings.PROJECT_DIR,
+                                    'logs/elastic_update_'+ now.strftime("%Y-%m-%d") +'.log')
             handler=logging.FileHandler(log_file)
             formatter = logging.Formatter('%(asctime)s\t%(levelname)s -- %(processName)s %(filename)s:%(lineno)s -- %(message)s')
             handler.setFormatter(formatter)
