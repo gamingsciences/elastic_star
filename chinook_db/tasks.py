@@ -30,7 +30,7 @@ def update_recs(model):
                 'match_all': {},
             },
             'sort': {
-                    model.date_field.key: {"order": "desc"}
+                    model.es_date_field: {"order": "desc"}
             },
             'size': '1'
         }

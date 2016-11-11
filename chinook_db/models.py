@@ -12,7 +12,8 @@ from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import MetaData
 from utils.database_utils import _gen_relationship
-
+import types
+from sqlalchemy import func
 
 engine = settings.CHINOOK_ENGINE
 metadata = MetaData()
@@ -33,7 +34,7 @@ Base = automap_base(metadata=metadata)
 Base.prepare(generate_relationship=_gen_relationship)
 
 Session = sessionmaker(bind=engine)
-
+session = Session()
 # some of the reflected tables don't generate a Base class like PlaylistTrack
 # usually they are tables that don't have a primary key and are many-to-many
 # tables.
@@ -144,7 +145,8 @@ class EsModel:
                  es_type='',
                  es_id='',
                  transforms=[],
-                 date_field=None
+                 date_field=None,
+                 es_date_field=''
                  ):
         self.base_model = base_model
         self.schema = schema
@@ -212,7 +214,13 @@ invoice = EsModel(base_model = Base.classes.Invoice,
                 es_index = 'chinook_invoice',
                 es_type = 'invoice',
                 es_id = 'InvoiceId',
-                date_field = Base.classes.Invoice.InvoiceDate)
+                date_field = Base.classes.Invoice.InvoiceDate,
+                es_date_field='InvoiceDate')
+
+def invoice_ext_func(self, date):
+    return session.query(self.base_model).filter(func.date(self.base_model.InvoiceDate) == date)
+
+invoice.extract = types.MethodType(invoice_ext_func, invoice)
 
 invoice_line = EsModel(base_model = Base.classes.InvoiceLine,
                 schema = invoiceline_schema,
@@ -237,6 +245,12 @@ invoice_line = EsModel(base_model = Base.classes.InvoiceLine,
                 es_type = 'invoiceline',
                 es_id = 'InvoiceLineId',
                 date_field = Base.classes.Invoice.InvoiceDate)
+
+def invoiceline_ext_func(self, date):
+    return session.query(self.base_model).join(Base.classes.Invoice)\
+                .filter(func.date(Base.classes.Invoice.InvoiceDate) == date)
+
+invoice_line.extract = types.MethodType(invoiceline_ext_func, invoiceline)
 
 media_type = EsModel(base_model = Base.classes.MediaType,
                 schema = mediatype_schema,
