@@ -27,7 +27,7 @@ def extract_by_date(model, date):
     extract_logger.info("Extracting chinook %s records for %s" %(model.es_index, date))
     session = Session()
     try:
-        q = session.query(model.base_model).filter(func.date(model.date_field) == date)
+        q = model.extract(date)
         results = [{'index': model.es_index,
                 'type': model.es_type,
                 'body': serialize(model.schema, obj),

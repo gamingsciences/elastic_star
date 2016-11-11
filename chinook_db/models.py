@@ -250,7 +250,7 @@ def invoiceline_ext_func(self, date):
     return session.query(self.base_model).join(Base.classes.Invoice)\
                 .filter(func.date(Base.classes.Invoice.InvoiceDate) == date)
 
-invoice_line.extract = types.MethodType(invoiceline_ext_func, invoiceline)
+invoice_line.extract = types.MethodType(invoiceline_ext_func, invoice_line)
 
 media_type = EsModel(base_model = Base.classes.MediaType,
                 schema = mediatype_schema,
