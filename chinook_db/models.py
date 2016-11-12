@@ -14,6 +14,8 @@ from sqlalchemy import MetaData
 from utils.database_utils import _gen_relationship
 import types
 from sqlalchemy import func
+from marshmallow_sqlalchemy import ModelSchema
+from marshmallow import fields
 
 engine = settings.CHINOOK_ENGINE
 metadata = MetaData()
@@ -40,9 +42,6 @@ session = Session()
 # tables.
 
 #---------------------------Schemas---------------------------------------------
-from marshmallow_sqlalchemy import ModelSchema
-from marshmallow import fields
-
 # Create the Marshmallow Schemas for each Base Class
 # also add nested object schema logic. Be mindful of the order of these classes
 # Nested schemas must come before the primary schema
@@ -154,9 +153,11 @@ class EsModel:
         self.es_index = es_index
         self.es_type = es_type
         self.es_id = es_id
-        self.date_field = date_field
+        self.date_field = date_field,
+        self.es_date_field = es_date_field
 
 
+# Album Model-----------------------------------
 album = EsModel(base_model = Base.classes.Album,
                 schema = album_schema,
                 transforms = [],
@@ -164,6 +165,7 @@ album = EsModel(base_model = Base.classes.Album,
                 es_type = 'album',
                 es_id = Base.classes.Album.AlbumId)
 
+# Artist Model-----------------------------------
 artist = EsModel(base_model = Base.classes.Artist,
                 schema = artist_schema,
                 transforms = [],
@@ -171,6 +173,7 @@ artist = EsModel(base_model = Base.classes.Artist,
                 es_type = 'artist',
                 es_id = Base.classes.Artist.ArtistId)
 
+# Customer Model-----------------------------------
 customer = EsModel(base_model = Base.classes.Customer,
                 schema = customer_schema,
                 transforms = [],
@@ -178,6 +181,7 @@ customer = EsModel(base_model = Base.classes.Customer,
                 es_type = 'customer',
                 es_id = Base.classes.Customer.CustomerId)
 
+# Employee Model-----------------------------------
 employee = EsModel(base_model = Base.classes.Employee,
                 schema = employee_schema,
                 transforms = [],
@@ -185,6 +189,7 @@ employee = EsModel(base_model = Base.classes.Employee,
                 es_type = 'employee',
                 es_id = Base.classes.Employee.EmployeeId)
 
+# Genre Model-----------------------------------
 genre = EsModel(base_model = Base.classes.Genre,
                 schema = genre_schema,
                 transforms = [],
@@ -192,6 +197,7 @@ genre = EsModel(base_model = Base.classes.Genre,
                 es_type = 'genre',
                 es_id = Base.classes.Genre.GenreId)
 
+# Invoice Model-----------------------------------
 invoice = EsModel(base_model = Base.classes.Invoice,
                 schema = invoice_schema,
                 transforms = [
@@ -222,6 +228,7 @@ def invoice_ext_func(self, date):
 
 invoice.extract = types.MethodType(invoice_ext_func, invoice)
 
+# InvoiceLine Model-----------------------------------
 invoice_line = EsModel(base_model = Base.classes.InvoiceLine,
                 schema = invoiceline_schema,
                 transforms = [
@@ -253,6 +260,7 @@ def invoiceline_ext_func(self, date):
 
 invoice_line.extract = types.MethodType(invoiceline_ext_func, invoice_line)
 
+# MediaType Model-----------------------------------
 media_type = EsModel(base_model = Base.classes.MediaType,
                 schema = mediatype_schema,
                 transforms = [],
@@ -260,9 +268,11 @@ media_type = EsModel(base_model = Base.classes.MediaType,
                 es_type = 'media_type',
                 es_id = Base.classes.MediaType.MediaTypeId)
 
+# PlayList Model-----------------------------------
 playlist = EsModel(base_model = Base.classes.Playlist,
                 schema = playlist_schema)
 
+# Track Model-----------------------------------
 track = EsModel(base_model = Base.classes.Track,
                 schema = track_schema,
                 transforms = [],
