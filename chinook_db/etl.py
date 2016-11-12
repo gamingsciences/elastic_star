@@ -21,6 +21,7 @@ def etl(audit_date, model):
     The ETL function. Uses the Dict 'extract_funcs' and the data_type var
     must be a key in this dict.
     '''
+    #TODO add logging funtionality
     es = Elasticsearch([es_host])
     batch_chunks = []
     iterator = 0

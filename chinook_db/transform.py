@@ -33,6 +33,7 @@ def transform(model, doc_dict):
 
 def batch_transform(model, date, doc_list):
     transformed_docs = []
+    #TODO get dir name for logger info to identify the database the data is transformed from
     transform_logger.info("Transforming chinook records for %s" %date )
     for doc in doc_list:
         try:

@@ -22,6 +22,7 @@ def extract_by_date(model, date):
     Extracts Model data from the DB.
 
     '''
+    #TODO get dir name for logger info to identify the database the data is extracted from
     index = model.es_index
     type_ = model.es_type
     extract_logger.info("Extracting chinook %s records for %s" %(model.es_index, date))
