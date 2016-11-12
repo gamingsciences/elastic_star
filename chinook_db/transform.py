@@ -9,6 +9,7 @@ Created on Fri Nov  4 17:03:32 2016
 
 @author: ken
 """
+import os
 from utils.transform_utils import transform_funcs, getFromDict, setInDict
 from utils.loggers import TransformLogger
 
@@ -17,7 +18,6 @@ transform_logger = logger.myLogger()
 
 
 def transform(model, doc_dict):
-
     for transform in model.transforms:
         data_fields = transform['data_fields']
         for key, val in data_fields.items():
@@ -33,13 +33,13 @@ def transform(model, doc_dict):
 
 def batch_transform(model, date, doc_list):
     transformed_docs = []
-    #TODO get dir name for logger info to identify the database the data is transformed from
-    transform_logger.info("Transforming chinook records for %s" %date )
+    dir_name = os.path.dirname(os.path.abspath(__file__)
+    transform_logger.info("Transforming %s records for %s" %(dir_name, date))
     for doc in doc_list:
         try:
             transformed_docs.append(transform(model, doc))
         except Exception as e:
-            transform_logger.info("Error transforming chinook data for %s" % date)
+            transform_logger.info("Error transforming %s data for %s" % (dir_name, date))
             transform_logger.error(e, exec_info=True)
 
     return transformed_docs

@@ -9,6 +9,7 @@ Created on Sat Feb 06 15:48:10 2016
 
 @author: Lathropk
 """
+import os
 from sqlalchemy import func
 from .models import Session
 from utils.database_utils import serialize
@@ -22,10 +23,10 @@ def extract_by_date(model, date):
     Extracts Model data from the DB.
 
     '''
-    #TODO get dir name for logger info to identify the database the data is extracted from
+    dir_name = os.path.dirname(os.path.abspath(__file__))
     index = model.es_index
     type_ = model.es_type
-    extract_logger.info("Extracting chinook %s records for %s" %(model.es_index, date))
+    extract_logger.info("Extracting %s %s records for %s" %(dir_name, model.es_index, date))
     session = Session()
     try:
         q = model.extract(date)
