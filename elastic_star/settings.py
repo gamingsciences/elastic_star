@@ -35,15 +35,15 @@ INSTALLED_APPS = [
     'conformed_dimensions.apps.ConformedDimensionsConfig',
     'djcelery',
     'djkombu',
-    'kombu.transport.django',
-    
+    #'kombu.transport.django',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
+
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -126,18 +126,18 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# Celery settings  
+# Celery settings
 # also update the db with: python manage.py migrate kombu_transport_django
 import djcelery
 djcelery.setup_loader()
 CELERY_IMPORTS = ("conformed_dimensions.tasks", "chinook_db.tasks", )
 CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
-BROKER_URL = 'django://' 
+BROKER_URL = 'django://'
 CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
-#: Only add pickle to this list if your broker is secured 
-#: from unwanted access (see userguide/security.html) 
-CELERY_ACCEPT_CONTENT = ['json'] 
-CELERY_TASK_SERIALIZER = 'json' 
+#: Only add pickle to this list if your broker is secured
+#: from unwanted access (see userguide/security.html)
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 
 # sqlalchemy connection to legacy databases
